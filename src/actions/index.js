@@ -5,8 +5,15 @@ export const fetchPostsAndUsers = () => async dispatch => {
     await dispatch(fetchPosts())
     
     // Getting Unique User Ids
-    const userIds = _uniq(_.map(getState().posts, 'userId'))
-    userIds.forEach(id => dispatch(fetchUser(id)))
+    // const userIds = _uniq(_.map(getState().posts, 'userId'))
+    // userIds.forEach(id => dispatch(fetchUser(id)))
+
+    // Getting Unique User Ids with Chain
+    _.chain(getState().posts)
+        .map('userId')
+        .uniq()
+        .forEach(id => dispatch(fetchUser(id)))
+        .value()
 }
 
 export const fetchPosts = () => async dispatch => {
